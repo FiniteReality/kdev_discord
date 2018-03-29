@@ -1,0 +1,12 @@
+{
+    "KPlugin": {
+        "Description": "kdev_discord",
+        "Id": "kdev_discord",
+        "Name": "kdev_discord",
+        "ServiceTypes": [
+            "KDevelop/Plugin"
+        ]
+    },
+    "X-KDevelop-Category": "Global",
+    "X-KDevelop-Mode": "GUI"
+}
