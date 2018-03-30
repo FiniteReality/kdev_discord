@@ -1,0 +1,5 @@
+# Project files
+.kdev4/
+
+# Build results
+build/

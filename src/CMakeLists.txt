@@ -12,7 +12,10 @@ kdevplatform_add_plugin(kdev_discord
     JSON kdev_discord.json
     SOURCES ${kdev_discord_SRCS}
 )
+add_dependencies(kdev_discord discord-rpc)
 
 target_link_libraries(kdev_discord
+    KF5::TextEditor
     KDev::Interfaces
+    discord-rpc
 )

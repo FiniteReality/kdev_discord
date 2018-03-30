@@ -1,35 +1,39 @@
-# Simple KDevelop Plugin
+# kdev_discord
 
-## Installation instructions
+A simple KDevelop plugin which integrates [Discord Rich Presence](discordrpc)
+to allow other users to see what you're working on.
 
-Make sure the project is configured to install to the directory of your choice:
+## Building ##
 
-In KDevelop, select the menu entry "Project" > "Open Configuration...",
-then in the dialog choose the tab "CMake",
-there select in the "Cache Values" list the entry with the name `CMAKE_INSTALL_PREFIX`
-and ensure the correct path is set.
+In theory, it should be as easy as running these shell commands:
+```bash
+if [ -d build ]; then mkdir build; fi
+cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
+make
+sudo make install
+```
 
-If you install to a custom directory, you need to extend the `QT_PLUGIN_PATH`
-environment variable that KDevelop sees when it is started. The path to be added
-is the "plugins" subdir, whose exact path depends on the operating system and
-if that is a 64 bit or 32 bit one.
-On Debian, Ubuntu & similar with a 64 bit system add:
-    $my_install_prefix/lib/x86_64-linux-gnu/plugins
-On openSUSE & similar with a 64 bit system add:
-    $my_install_prefix/lib64/plugins
-(where `$my_install_prefix` is the directory `CMAKE_INSTALL_PREFIX` is set to)
+And then restarting KDevelop once it has successfully built. If KDevelop does
+not detect the kdev_discord plugin, you may need to set your `QT_PLUGIN_PATH`
+environment variable before launching KDevelop:
 
-If you are unsure, check in the installation log the path to which the plugin is installed.
+```bash
+QT_PLUGIN_PATH=$QT_PLUGIN_PATH:$INSTALL_PREFIX/lib/plugins kdevelop
+```
 
+where `INSTALL_PREFIX` is the location where CMake is set to install the
+project to.
 
-Example:
-When CMAKE_INSTALL_PREFIX is set to "/home/userX/projects/mykdevplugin/" and
-this is a Debian 64-bit system, open a console and enter:
+## Screenshots ##
 
-    export QT_PLUGIN_PATH=$QT_PLUGIN_PATH:/home/userX/projects/mykdevplugin/lib/x86_64-linux-gnu/plugins 
+![Profile Popup](https://i.imgur.com/pp4XvAX.png)
+![Profile Modal](https://i.imgur.com/PrJ6G1v.png)
 
-Then start KDevelop from that console:
+## TO-DO ##
 
-    kdevelop
+- Add language recognition based on MIME type
+- Potentially add detection for running jobs
+- Give friendly names to the plugin in the UI
 
-If everything went well, you should see "Hello world, my plugin is loaded!" printed in the console and find the plugin also listed in the dialog opened by the menu entry "Help" > "Loaded Plugins".
+[discordrpc]: https://github.com/discordapp/discord-rpc

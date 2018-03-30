@@ -1,0 +1,3 @@
+[submodule "thirdparty/discord-rpc"]
+	path = thirdparty/discord-rpc
+	url = https://github.com/discordapp/discord-rpc.git
