@@ -1,6 +1,6 @@
 # kdev_discord
 
-A simple KDevelop plugin which integrates [Discord Rich Presence](discordrpc)
+A simple KDevelop plugin which integrates [Discord Rich Presence][discordrpc]
 to allow other users to see what you're working on.
 
 ## Building ##
