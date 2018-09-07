@@ -47,7 +47,7 @@ void kdev_discord::load()
     DiscordEventHandlers handlers;
     memset(&handlers, 0, sizeof(handlers));
 
-    handlers.ready = [](){
+    handlers.ready = [](const DiscordUser*){
         discordReady = true;
         SetDefaultState();
     };
@@ -90,33 +90,40 @@ void kdev_discord::setCurrentFile(KDevelop::IDocument* document)
 
         auto session = core()->activeSession();
         auto projectCtrl = core()->projectController();
-        auto project = projectCtrl->findProjectForUrl(document->url());
-        auto projects = session->containedProjects();
 
-        auto sessionProjs = QString::number(projects.size());
-        auto sessionName = session->name();
-        auto sessionDesc = session->description();
-        auto projectName = project->name();
+        auto project = projectCtrl == nullptr ? nullptr :
+            projectCtrl->findProjectForUrl(document->url());
 
-        QString state = "Editing some code";
-        QString details = fileName;
+        if (session != nullptr &&
+            projectCtrl != nullptr &&
+            project != nullptr)
+        {
+            auto projects = session->containedProjects();
+            auto sessionProjs = QString::number(projects.size());
+            auto sessionName = session->name();
+            auto sessionDesc = session->description();
+            auto projectName = project->name();
 
-        if (!sessionName.isEmpty())
-            state = "In session " + sessionName + " (" + sessionProjs + " projects)";
+            QString state = "Editing some code";
+            QString details = fileName;
 
-        if (!projectName.isEmpty())
-            details = fileName + " in " + projectName;
+            if (!sessionName.isEmpty())
+                state = "In session " + sessionName + " (" + sessionProjs + " projects)";
 
-        DiscordRichPresence presence;
-        memset(&presence, 0, sizeof(presence));
+            if (!projectName.isEmpty())
+                details = fileName + " in " + projectName;
 
-        presence.state = state.toUtf8().constData();
-        presence.details = details.toUtf8().constData();
-        presence.largeImageKey = "kdev_logo";
-        presence.largeImageText = sessionDesc.toUtf8().constData();
-        presence.startTimestamp = time(nullptr);
+            DiscordRichPresence presence;
+            memset(&presence, 0, sizeof(presence));
 
-        Discord_UpdatePresence(&presence);
+            presence.state = state.toUtf8().constData();
+            presence.details = details.toUtf8().constData();
+            presence.largeImageKey = "kdev_logo";
+            presence.largeImageText = sessionDesc.toUtf8().constData();
+            presence.startTimestamp = time(nullptr);
+
+            Discord_UpdatePresence(&presence);
+        }
     }
 }
 
